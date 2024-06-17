@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Carecode test</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round"></link>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"></link>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+    <link rel="stylesheet" href="./style/index.css"/>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    </h:head>
+    <h:body>
+       
+         <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <h:form id="employeeListForm">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2>Carecode <b>Test</b></h2>
+                        </div>
+                         
+                        <div class="col-sm-6">
+                            <h:commandLink onclick="showModal()" class="btn btn-success"  action="#{employeeController.resetForm()}">
+                                <f:ajax render="myModalForm" />
+                                <i class="material-icons">&#xE147;</i> 
+                                <span>Add New Employee</span>
+                            </h:commandLink>
+
+                           						
+                        </div>
+                    </div>
+                </div>
+                 
+                      
+<!--                <p>fhgfhfghg#{employeeController.employees}</p>-->
+                
+                <h:dataTable  value="#{employeeController.employees}" var="employee"  class="table table-striped table-hover">
+                  <h:column>
+                      <f:facet name="header">Name</f:facet>
+                #{employee.name}
+            </h:column>
+                    <h:column>
+                <f:facet name="header">Email</f:facet>
+                #{employee.email}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Address</f:facet>
+                #{employee.address}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Phone</f:facet>
+                #{employee.phone}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Actions</f:facet>
+                <h:commandLink class="edit" action="#{employeeController.editEmployee(employee)}" onclick="showModal()">
+                    <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                    <f:ajax render="addEditForm" />
+                </h:commandLink>
+                <h:commandLink  class="delete" action="#{employeeController.deleteEmployee(employee)}">
+                    <i class="material-icons" data-toggle="tooltip"  title="Delete">&#xE872;</i>
+                   
+                </h:commandLink>
+            </h:column>
+                </h:dataTable>
+                  </h:form>
+            </div>
+        </div>        
+    </div>
+        
+       
+         <div id="addEmployeeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                 <h:form id="addEditForm">
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Add Employee</h4>
+                        <h:commandLink type="button" class="close"  action="#{employeeController.resetForm()}"  onclick="hideModal()">&times;</h:commandLink>
+                    </div>
+                    <div class="modal-body">					
+                        <div class="form-group">
+                            <label>Name</label>
+                            <h:inputText value="#{employeeController.currentEmployee.name}" class="form-control" required="true"></h:inputText> 
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <h:inputText a:type="email" value="#{employeeController.currentEmployee.email}" class="form-control" required="true"></h:inputText>
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <h:inputTextarea value="#{employeeController.currentEmployee.address}" class="form-control" required="true"></h:inputTextarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <h:inputText  value="#{employeeController.currentEmployee.phone}" class="form-control" required="true"></h:inputText>
+                        </div>					
+                    </div>
+                    <div class="modal-footer">
+                           <h:commandButton class="btn btn-success" value="#{employeeController.editMode ? 'Update' : 'Add'}"
+                                 action="#{employeeController.saveEmployee}">
+                               <f:ajax execute="@form" render="@form :employeeListForm" onevent="handleAddEditEvent" />
+                     
+               
+                </h:commandButton>
+                        <h:commandButton value="Cancel" class="btn btn-default" action="#{employeeController.resetForm()}"  onclick="hideModal()">
+                    <f:ajax execute="@form" render="@form" />
+                </h:commandButton>
+                        <!--<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"></input>-->
+                    </div>
+                            </h:form>
+
+            </div>
+        </div>
+    </div>
+        
+       
+         <div id="deleteEmployeeModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <h:form id="deleteform">
+                  
+                    <div class="modal-header">						
+                        <h4 class="modal-title">Delete Employee</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">					
+                        <p>Are you sure you want to delete these Records?</p>
+                        <p class="text-warning"><small>This action cannot be undone.</small></p>
+                    </div>
+                    <div class="modal-footer">
+                        <h:commandButton class="btn btn-default" value="Cancel" onclick="hidedeleteModal()"></h:commandButton>
+                        <h:commandButton class="btn btn-danger" action="#{employeeController.deleteEmployee(employee)}" type="submit" value="Delete"></h:commandButton>
+                          
+                    </div>
+                </h:form> 
+            </div>
+        </div>
+    </div>
+       
+        
+        <script>
+    function showModal() {
+        $('#addEmployeeModal').modal('show');
+    }
+//    function showDeleteModal(Id) {
+//         document.getElementById('deleteForm:itemId').value = Id;
+//        $('#deleteEmployeeModal').modal('show');
+//    }
+    function hideModal() {
+    $('#addEmployeeModal').modal('hide');
+}
+    function hidedeleteModal() {
+    $('#deleteEmployeeModal').modal('hide');
+}
+
+function handleAddEditEvent(event) {
+                if (event.status === 'success') {
+                    hideModal();
+                }
+            }
+            function handleDeleteEvent(event) {
+                if (event.status === 'success') {
+                    hideDeleteModal();
+                }
+            }
+</script>
+    </h:body>
+</html>
+
