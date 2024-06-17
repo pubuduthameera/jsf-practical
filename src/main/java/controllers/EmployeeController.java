@@ -10,7 +10,7 @@ import javax.faces.bean.SessionScoped;
 
 
 
-@ManagedBean(name="employeeController")
+@ManagedBean(name="employeeController" )
 @SessionScoped
 public class EmployeeController implements Serializable{
 
