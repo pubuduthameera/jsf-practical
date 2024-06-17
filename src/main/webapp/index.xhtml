@@ -135,29 +135,6 @@
     </div>
         
        
-         <div id="deleteEmployeeModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <h:form id="deleteform">
-                  
-                    <div class="modal-header">						
-                        <h4 class="modal-title">Delete Employee</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    </div>
-                    <div class="modal-body">					
-                        <p>Are you sure you want to delete these Records?</p>
-                        <p class="text-warning"><small>This action cannot be undone.</small></p>
-                    </div>
-                    <div class="modal-footer">
-                        <h:commandButton class="btn btn-default" value="Cancel" onclick="hidedeleteModal()"></h:commandButton>
-                        <h:commandButton class="btn btn-danger" action="#{employeeController.deleteEmployee(employee)}" type="submit" value="Delete"></h:commandButton>
-                          
-                    </div>
-                </h:form> 
-            </div>
-        </div>
-    </div>
-       
         
         <script>
     function showModal() {
@@ -170,20 +147,13 @@
     function hideModal() {
     $('#addEmployeeModal').modal('hide');
 }
-    function hidedeleteModal() {
-    $('#deleteEmployeeModal').modal('hide');
-}
 
 function handleAddEditEvent(event) {
                 if (event.status === 'success') {
                     hideModal();
                 }
             }
-            function handleDeleteEvent(event) {
-                if (event.status === 'success') {
-                    hideDeleteModal();
-                }
-            }
+         
 </script>
     </h:body>
 </html>
